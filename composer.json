@@ -5,12 +5,15 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "maize-tech/laravel-markable": "^1.0",
+        "overtrue/laravel-follow": "^5.0",
+        "spatie/laravel-medialibrary": "^10.4"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",
