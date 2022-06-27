@@ -38,6 +38,11 @@ return [
     */
 
     'allowed_values' => [
-        'reaction' => [],
+        'reaction' => [
+            'like',
+            'person_raising_hand',
+            'heart',
+            'kissing_heart',
+        ],
     ],
 ];
