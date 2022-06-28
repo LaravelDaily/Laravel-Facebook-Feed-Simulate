@@ -10,14 +10,14 @@ class PostFactory extends Factory
 {
     public function definition(): array
     {
-        $users = collect(User::all('id')->modelKeys());
+        $users = User::all('id');
 
         return [
             'user_id'    => $users->random(),
             'post_text'  => $this->faker->paragraphs(rand(1, 5), true),
             'link_url'   => $this->faker->url(),
             'link_text'  => $this->faker->words(rand(1, 4), true),
-//            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'created_at' => $this->faker->dateTimeBetween($startDate = '-1 year', $endDate = 'now')
         ];
     }
 
@@ -25,10 +25,10 @@ class PostFactory extends Factory
     {
         return $this->afterCreating(function (Post $post) {
             if ($this->faker->boolean(20)) {
-                $posts = collect(Post::all('id')->modelKeys());
+                $posts = Post::inRandomOrder()->first();
 
                 $post->update([
-                    'post_id' => $posts->random(),
+                    'post_id' => $posts->id,
                 ]);
             }
         });
