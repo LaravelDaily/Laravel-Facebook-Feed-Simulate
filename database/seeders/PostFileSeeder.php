@@ -9,7 +9,7 @@ class PostFileSeeder extends Seeder
 {
     public function run()
     {
-        $posts = Post::inRandomOrder()->take(1000);
+        $posts = Post::inRandomOrder()->take(1000)->get();
 
         foreach ($posts as $post) {
             $fileUrl = 'https://picsum.photos/640/480';

@@ -4,15 +4,18 @@ namespace App\Models;
 
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Database\Eloquent\Builder;
 use Overtrue\LaravelFollow\Traits\Follower;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Overtrue\LaravelFollow\Traits\Followable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -49,14 +52,46 @@ class User extends Authenticatable implements HasMedia
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'verified_at' => 'datetime',
+        'verified_at'       => 'datetime',
     ];
 
-    public function registerMediaConversions(Media $media = null): void
+    /**
+     * Note to self
+     * Stackoverflow https://stackoverflow.com/questions/43285779/laravel-polymorphic-relations-has-many-through
+     * Maybe use https://github.com/staudenmeir/eloquent-has-many-deep ?
+     */
+    public function followersPosts(): belongsToMany
+    {
+        return $this->belongsToMany(Post::class, \Overtrue\LaravelFollow\Followable::class, 'followable_id', 'user_id')
+            ->where('followable_type', static::class)
+            ->with(['media', 'user.media', 'popularComment.replies' => function ($query) {
+                $query->with('user.media')
+                    ->withCount('reactions')
+                    ->orderBy('reactions_count')
+                    ->take(1);
+            }])
+            ->withCount(['reactions', 'comments', 'sharedPost'])
+            ->latest();
+    }
+
+    public
+    function posts(): hasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public
+    function comments(): hasMany
+    {
+        return $this->hasMany(PostComment::class);
+    }
+
+    public
+    function registerMediaConversions(Media $media = null): void
     {
         $this
             ->addMediaConversion('avatar')
-            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->fit(Manipulations::FIT_CROP, 32, 32)
             ->nonQueued();
     }
 }
