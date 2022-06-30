@@ -40,6 +40,14 @@
                     </div>
                     {{-- END POST CONTENT --}}
 
+                    {{-- POST LINK --}}
+                    @if($post->link_url)
+                        <div class="text-justify px-4 py-2">
+                            <a class="font-semibold hover:underline" href="{{ $post->link_url }}" target="_blank">{{ $post->link_text }}</a>
+                        </div>
+                    @endif
+                    {{-- END POST LINK --}}
+
                     @if($post->media->count())
                         {{-- END POST IMAGE --}}
                         <div class="py-2">
