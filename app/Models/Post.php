@@ -38,6 +38,11 @@ class Post extends Model implements HasMedia
         return $this->hasMany(PostComment::class);
     }
 
+    public function reactionsGrouped()
+    {
+        return $this->reactions->groupBy('value');
+    }
+
     public function sharedPost(): belongsTo
     {
         return $this->belongsTo(self::class, 'id', 'post_id')->whereNotNull('post_id');
@@ -46,6 +51,7 @@ class Post extends Model implements HasMedia
     public function popularComment(): hasOne
     {
         return $this->hasOne(PostComment::class)
+            ->whereNull('parent_comment_id')
             ->with('user.media')
             ->withCount('reactions')
             ->orderBy('reactions_count');

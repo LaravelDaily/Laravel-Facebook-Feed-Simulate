@@ -52,7 +52,14 @@
                     <div class="px-4 py-2">
                         <div class="flex items-center justify-between">
                             <div class="flex flex-row-reverse items-center">
-                                <span class="ml-2 text-gray-500">{{ $post->reactions_count }} reactions</span>
+                                <div class="flex">
+                                    <div class="flex -space-x-2">
+                                        @foreach($post->reactions->groupBy('value') as $reaction => $data)
+                                            <x-dynamic-component :component="'reactions.' . $reaction" />
+                                        @endforeach
+                                    </div>
+                                    <span class="ml-1 text-gray-500">{{ $post->reactions_count }} reactions</span>
+                                </div>
                                 <span class="rounded-full grid place-items-center text-2xl -ml-1 text-red-800">
                                     <i class='bx bxs-angry'></i>
                                 </span> <span class="rounded-full grid place-items-center text-2xl -ml-1 text-red-500">

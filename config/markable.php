@@ -40,9 +40,8 @@ return [
     'allowed_values' => [
         'reaction' => [
             'like',
-            'person_raising_hand',
+            'laughing',
             'heart',
-            'kissing_heart',
         ],
     ],
 ];

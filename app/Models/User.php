@@ -64,30 +64,22 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->belongsToMany(Post::class, \Overtrue\LaravelFollow\Followable::class, 'followable_id', 'user_id')
             ->where('followable_type', static::class)
-            ->with(['media', 'user.media', 'popularComment.replies' => function ($query) {
-                $query->with('user.media')
-                    ->withCount('reactions')
-                    ->orderBy('reactions_count')
-                    ->take(1);
-            }])
+            ->with(['media', 'user.media', 'reactions', 'popularComment'])
             ->withCount(['reactions', 'comments', 'sharedPost'])
             ->latest();
     }
 
-    public
-    function posts(): hasMany
+    public function posts(): hasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public
-    function comments(): hasMany
+    public function comments(): hasMany
     {
         return $this->hasMany(PostComment::class);
     }
 
-    public
-    function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(Media $media = null): void
     {
         $this
             ->addMediaConversion('avatar')
