@@ -20,6 +20,7 @@ class Post extends Model implements HasMedia
     use HasFactory;
     use Markable;
     use InteractsWithMedia;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $guarded = [];
 
@@ -38,11 +39,6 @@ class Post extends Model implements HasMedia
         return $this->hasMany(PostComment::class);
     }
 
-    public function reactionsGrouped()
-    {
-        return $this->reactions->groupBy('value');
-    }
-
     public function sharedPost(): belongsTo
     {
         return $this->belongsTo(self::class, 'id', 'post_id')->whereNotNull('post_id');
@@ -54,7 +50,7 @@ class Post extends Model implements HasMedia
             ->whereNull('parent_comment_id')
             ->with('user.media')
             ->withCount('reactions')
-            ->orderBy('reactions_count');
+            ->orderByDesc('reactions_count');
     }
 
     public function registerMediaConversions(Media $media = null): void

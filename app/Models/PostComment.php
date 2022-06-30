@@ -14,7 +14,6 @@ class PostComment extends Model
 {
     use HasFactory;
     use Markable;
-    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
     protected static array $marks = [
         Like::class,
@@ -29,5 +28,13 @@ class PostComment extends Model
     public function replies(): hasMany
     {
         return $this->hasMany(self::class, 'parent_comment_id', 'id');
+    }
+
+    public function popularReply()
+    {
+        return $this->hasOne(self::class, 'parent_comment_id', 'id')
+            ->with('user.media')
+            ->withCount('reactions')
+            ->orderByDesc('reactions_count');
     }
 }

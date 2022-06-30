@@ -123,7 +123,42 @@
                     {{-- LIST COMMENT --}}
                     @if($post->comments_count)
                         <div class="py-2 px-4">
-                            <x-comment :popularComment="$post->popularComment" />
+                            {{-- COMMENT --}}
+                            <div class="flex space-x-2">
+                                <img src="{{ $post->popularComment->user->getMedia('avatar')->last()->getUrl() }}" alt="Profile picture" class="w-9 h-9 rounded-full">
+                                <div>
+                                    <div class="bg-gray-100 p-2 rounded-2xl text-sm">
+                                        <span class="font-semibold block">{{ $post->popularComment->user->name }}</span>
+                                        <span>{{ $post->popularComment->comment_text }}</span>
+                                    </div>
+                                    <div class="p-2 text-xs text-gray-500">
+                                        <span class="font-semibold cursor-pointer">Like</span> <span>.</span>
+                                        <span class="font-semibold cursor-pointer">Reply</span> <span>.</span>
+                                        {{ $post->popularComment->created_at->diffForHumans() }}
+                                    </div>
+                                    {{-- REPLY --}}
+                                    @if($post->popularComment->popularReply)
+                                        <div class="flex space-x-2">
+                                            <img src="{{ $post->popularComment->popularReply->user->getMedia('avatar')->last()->getUrl() }}" alt="Profile picture" class="w-9 h-9 rounded-full">
+                                            <div>
+                                                <div class="bg-gray-100 p-2 rounded-2xl text-sm">
+                                                    <span class="font-semibold block">{{ $post->popularComment->popularReply->user->name }}</span>
+                                                    <span>{{ $post->popularComment->popularReply->comment_text }}</span>
+                                                </div>
+                                                <div class="p-2 text-xs text-gray-500">
+                                                    <span class="font-semibold cursor-pointer">Like</span>
+                                                    <span>.</span>
+                                                    <span class="font-semibold cursor-pointer">Reply</span>
+                                                    <span>.</span>
+                                                    {{ $post->popularComment->popularReply->created_at->diffForHumans() }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    {{-- END REPLY --}}
+                                </div>
+                            </div>
+                            {{-- END COMMENT --}}
                         </div>
                     @endif
                 </div>

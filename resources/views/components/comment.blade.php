@@ -12,11 +12,9 @@
             {{ $popularComment->created_at->diffForHumans() }}
         </div>
         {{-- REPLY --}}
-        {{--@if($popularComment->replies)
-            @foreach($popularComment->replies as $reply)
-                <x-comment :popular-comment="$reply" />
-            @endforeach
-        @endif--}}
+        @if($popularComment->popularReply)
+            <x-comment :popular-comment="$popularComment->popularReply" />
+        @endif
         {{-- END REPLY --}}
     </div>
 </div>

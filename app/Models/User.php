@@ -22,6 +22,7 @@ class User extends Authenticatable implements HasMedia
     use HasApiTokens, HasFactory, Notifiable;
     use Follower, Followable;
     use InteractsWithMedia;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     /**
      * The attributes that are mass assignable.
@@ -60,13 +61,14 @@ class User extends Authenticatable implements HasMedia
      * Stackoverflow https://stackoverflow.com/questions/43285779/laravel-polymorphic-relations-has-many-through
      * Maybe use https://github.com/staudenmeir/eloquent-has-many-deep ?
      */
-    public function followersPosts(): belongsToMany
+    public function followersPosts()
     {
-        return $this->belongsToMany(Post::class, \Overtrue\LaravelFollow\Followable::class, 'followable_id', 'user_id')
-            ->where('followable_type', static::class)
-            ->with(['media', 'user.media', 'reactions', 'popularComment'])
-            ->withCount(['reactions', 'comments', 'sharedPost'])
-            ->latest();
+        return $this->hasManyDeep(
+            Post::class,
+            ['followables', self::class],
+            [null, null],
+            [null, ['followable_type', 'followable_id']]
+        );
     }
 
     public function posts(): hasMany
