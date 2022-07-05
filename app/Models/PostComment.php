@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Maize\Markable\Markable;
-use Maize\Markable\Models\Like;
 use Maize\Markable\Models\Reaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +15,6 @@ class PostComment extends Model
     use Markable;
 
     protected static array $marks = [
-        Like::class,
         Reaction::class,
     ];
 

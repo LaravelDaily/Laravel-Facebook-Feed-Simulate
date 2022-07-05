@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Database\Eloquent\Builder;
 use Overtrue\LaravelFollow\Traits\Follower;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Overtrue\LaravelFollow\Traits\Followable;
@@ -15,7 +14,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements HasMedia
 {

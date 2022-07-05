@@ -17,7 +17,8 @@ class PostFactory extends Factory
             'post_text'  => $this->faker->paragraphs(rand(1, 5), true),
             'link_url'   => $this->faker->url(),
             'link_text'  => $this->faker->words(rand(1, 4), true),
-            'created_at' => $this->faker->dateTimeBetween($startDate = '-1 year', $endDate = 'now')
+            'created_at' => $this->faker->dateTimeBetween($startDate = '-1 year', $endDate = 'now', 'Europe/Vilnius'),
+            'updated_at' => now(),
         ];
     }
 

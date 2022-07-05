@@ -18,7 +18,8 @@
                                 <div class="flex font-semibold">
                                     {{ $post->user->name }}
                                     @if($post->user->verified_at)
-                                        <svg class="w-3 h-3 bg-blue-500 text-white border rounded-full self-center ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <svg class="w-3 h-3 bg-blue-500 text-white border rounded-full self-center ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"  role="img">
+                                            <title>Verified user</title>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     @endif

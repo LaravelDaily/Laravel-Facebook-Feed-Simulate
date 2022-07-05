@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Maize\Markable\Markable;
-use Maize\Markable\Models\Like;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Maize\Markable\Models\Reaction;
@@ -12,6 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -20,12 +20,11 @@ class Post extends Model implements HasMedia
     use HasFactory;
     use Markable;
     use InteractsWithMedia;
-    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
+    use HasRelationships;
 
     protected $guarded = [];
 
     protected static array $marks = [
-        Like::class,
         Reaction::class,
     ];
 

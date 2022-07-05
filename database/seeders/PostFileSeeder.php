@@ -12,9 +12,7 @@ class PostFileSeeder extends Seeder
         $posts = Post::inRandomOrder()->take(1000)->get();
 
         foreach ($posts as $post) {
-            $fileUrl = 'https://picsum.photos/640/480';
-
-            $post->addMediaFromUrl($fileUrl)->toMediaCollection('posts');
+            $post->addMediaFromUrl('https://picsum.photos/640/480')->toMediaCollection('posts');
         }
     }
 }

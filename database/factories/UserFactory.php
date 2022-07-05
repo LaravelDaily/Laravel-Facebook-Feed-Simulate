@@ -50,7 +50,7 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             $fileUrl = 'https://picsum.photos/640/480';
 
-            $user->addMediaFromUrl($fileUrl)->toMediaCollection('avatar');
+            $user->addMediaFromUrl('https://picsum.photos/640/480')->toMediaCollection('avatar');
         });
     }
 }

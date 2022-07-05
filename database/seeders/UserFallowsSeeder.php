@@ -9,16 +9,16 @@ class UserFallowsSeeder extends Seeder
 {
     public function run()
     {
-        $users = User::all();
+        User::chunk(100, function ($users) {
+            foreach ($users as $user) {
+                $randomUsers = User::query()
+                    ->inRandomOrder()
+                    ->whereNot('id', $user->id)
+                    ->take(rand(10, 100))
+                    ->get();
 
-        foreach ($users as $user) {
-            $randomUsers = User::query()
-                ->inRandomOrder()
-                ->whereNot('id', $user->id)
-                ->take(rand(10, 100))
-                ->get();
-
-            $randomUsers->each->follow($user);
-        }
+                $randomUsers->each->follow($user);
+            }
+        });
     }
 }
