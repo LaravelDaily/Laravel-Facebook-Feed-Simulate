@@ -56,11 +56,6 @@ class User extends Authenticatable implements HasMedia
         'verified_at'       => 'datetime',
     ];
 
-    /**
-     * Note to self
-     * Stackoverflow https://stackoverflow.com/questions/43285779/laravel-polymorphic-relations-has-many-through
-     * Maybe use https://github.com/staudenmeir/eloquent-has-many-deep ?
-     */
     public function followersPosts()
     {
         return $this->hasManyDeep(
