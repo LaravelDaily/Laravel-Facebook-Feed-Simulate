@@ -3,13 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class UserSeeder extends Seeder
 {
     public function run()
     {
+        file_put_contents(storage_path('app/avatar.jpg'), file_get_contents('https://picsum.photos/50/50'));
+
         $faker = \Faker\Factory::create();
         $data = [];
 
@@ -30,7 +36,29 @@ class UserSeeder extends Seeder
         }
 
         User::chunkById(100, function ($users) {
-            $users->each(fn ($user) => $user->addMediaFromUrl('https://picsum.photos/640/480')->toMediaCollection('avatar'));
+            $users->each(function ($user) {
+                Storage::makeDirectory('public/' . $user->id);
+
+                Storage::copy('avatar.jpg', 'public/' . $user->id . '/50.jpeg');
+
+                Media::create([
+                    'model_type'            => 'App\Models\User',
+                    'model_id'              => $user->id,
+                    'collection_name'       => 'avatar',
+                    'uuid'                  => Str::uuid(),
+                    'name'                  => '50',
+                    'file_name'             => '50.jpeg',
+                    'mime_type'             => 'image/jpeg',
+                    'disk'                  => 'public',
+                    'conversions_disk'      => 'public',
+                    'size'                  => Storage::size('public/' . $user->id . '/50.jpeg'),
+                    'manipulations'         => '[]',
+                    'custom_properties'     => '[]',
+                    'responsive_images'     => '[]',
+                    'order_column'          => 1,
+                    'generated_conversions' => ['avatar' => true],
+                ]);
+            });
         });
     }
 }
