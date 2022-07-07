@@ -14,24 +14,25 @@ class CommentReactionSeeder extends Seeder
         $comments = collect(PostComment::all('id')->modelKeys());
         $users = collect(User::all('id')->modelKeys());
 
-        $faker = \Faker\Factory::create();
         $data = [];
 
         $reactions = config('markable.allowed_values.reaction');
 
-        for ($i = 0; $i < 1000000; $i++) {
-            $data[] = [
-                'user_id'       => $users->random(),
-                'markable_type' => 'App\Models\PostComment',
-                'markable_id'   => $comments->random(),
-                'value'         => $reactions[array_rand($reactions)],
-            ];
-        }
+        for ($i = 0; $i < 100; $i++) {
+            for ($i = 0; $i < 10000; $i++) {
+                $data[] = [
+                    'user_id'       => $users->random(),
+                    'markable_type' => 'App\Models\PostComment',
+                    'markable_id'   => $comments->random(),
+                    'value'         => $reactions[array_rand($reactions)],
+                ];
+            }
 
-        $chunks = array_chunk($data, 10000);
+            foreach ($data as $reaction) {
+                Reaction::insert($reaction);
+            }
 
-        foreach ($chunks as $chunk) {
-            Reaction::insert($chunk);
+            $data = [];
         }
     }
 }
