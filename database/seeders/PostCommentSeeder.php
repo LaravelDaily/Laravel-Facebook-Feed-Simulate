@@ -18,11 +18,16 @@ class PostCommentSeeder extends Seeder
         $data = [];
 
         for ($i = 0; $i < 100000; $i++) {
+            if ($i > 80000) {
+                $parentComment = random_int(1, 79999);
+            }
+
             $data[] = [
-                'post_id'      => $posts->random(),
-                'user_id'      => $users->random(),
-                'comment_text' => $faker->paragraphs(rand(1, 5), true),
-                'created_at'   => now(),
+                'post_id'           => $posts->random(),
+                'user_id'           => $users->random(),
+                'comment_text'      => $faker->paragraphs(rand(1, 5), true),
+                'parent_comment_id' => $parentComment ?? null,
+                'created_at'        => now(),
             ];
         }
 
@@ -30,16 +35,6 @@ class PostCommentSeeder extends Seeder
 
         foreach ($chunks as $chunk) {
             PostComment::insert($chunk);
-        }
-
-        $postComments = PostComment::query()->inRandomOrder()->take(15000)->get();
-
-        foreach ($postComments as $comment) {
-            $comments = PostComment::query()->select('id')->where('id', '!=', $comment->id)->inRandomOrder()->first();
-
-            $comment->update([
-                'parent_comment_id' => $comments->id,
-            ]);
         }
     }
 }
