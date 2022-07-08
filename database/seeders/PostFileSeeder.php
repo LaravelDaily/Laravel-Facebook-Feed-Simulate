@@ -17,27 +17,9 @@ class PostFileSeeder extends Seeder
         $posts = Post::inRandomOrder()->take(1000)->get();
 
         foreach ($posts as $post) {
-            Storage::makeDirectory('public/' . $post->id);
-
-            Storage::copy('post.jpg', 'public/' . $post->id . '/640.jpeg');
-
-            Media::create([
-                'model_type'            => 'App\Models\Post',
-                'model_id'              => $post->id,
-                'collection_name'       => 'posts',
-                'uuid'                  => Str::uuid(),
-                'name'                  => '640',
-                'file_name'             => '640.jpeg',
-                'mime_type'             => 'image/jpeg',
-                'disk'                  => 'public',
-                'conversions_disk'      => 'public',
-                'size'                  => Storage::size('public/' . $post->id . '/640.jpeg'),
-                'manipulations'         => '[]',
-                'custom_properties'     => '[]',
-                'responsive_images'     => '[]',
-                'order_column'          => 1,
-                'generated_conversions' => ['posts' => true],
-            ]);
+            $post->addMedia(storage_path('app/post.jpg'))
+                ->preservingOriginal()
+                ->toMediaCollection('posts');
         }
     }
 }
