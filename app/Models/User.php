@@ -14,13 +14,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Overtrue\LaravelFollow\Followable as FollowableModel;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable;
     use Follower, Followable;
     use InteractsWithMedia;
-    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     /**
      * The attributes that are mass assignable.
@@ -54,14 +55,9 @@ class User extends Authenticatable implements HasMedia
         'verified_at'       => 'datetime',
     ];
 
-    public function followersPosts()
+    public function followersPosts(): BelongsToMany
     {
-        return $this->hasManyDeep(
-            Post::class,
-            ['followables', self::class],
-            [null, null],
-            [null, ['followable_type', 'followable_id']]
-        );
+        return $this->belongsToMany(Post::class, FollowableModel::class, 'user_id', 'followable_id', 'id', 'user_id');
     }
 
     public function posts(): hasMany
