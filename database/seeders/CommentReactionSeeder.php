@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Reaction;
 use App\Models\PostComment;
 use Illuminate\Database\Seeder;
-use Maize\Markable\Models\Reaction;
 
 class CommentReactionSeeder extends Seeder
 {
@@ -29,7 +29,7 @@ class CommentReactionSeeder extends Seeder
             }
 
             foreach ($data as $reaction) {
-                Reaction::insert($reaction);
+                Reaction::create($reaction);
             }
 
             $data = [];

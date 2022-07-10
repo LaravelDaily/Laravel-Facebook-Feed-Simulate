@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Maize\Markable\Markable;
-use Maize\Markable\Models\Reaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
