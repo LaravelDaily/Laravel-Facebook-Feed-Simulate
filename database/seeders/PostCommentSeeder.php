@@ -16,23 +16,38 @@ class PostCommentSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
         $data = [];
+        $counts = [];
 
-        for ($i = 0; $i < 100000; $i++) {
-            if ($i > 80000) {
-                $parentComment = random_int(1, 79999);
+        for ($r=0; $r < 10; $r++) {
+            for ($i = 0; $i < 10000; $i++) {
+                /*if ($r = 9) {
+                    $parentComment = random_int(1, 69999);
+                }*/
+
+                $data[] = [
+                    'post_id'           => $posts->random(),
+                    'user_id'           => $users->random(),
+                    'comment_text'      => $faker->paragraphs(rand(1, 5), true),
+                    'parent_comment_id' => null,
+                    'created_at'        => now(),
+                ];
             }
 
-            $data = [
-                'post_id'           => $posts->random(),
-                'user_id'           => $users->random(),
-                'comment_text'      => $faker->paragraphs(rand(1, 5), true),
-                'parent_comment_id' => $parentComment ?? null,
-                'created_at'        => now(),
-            ];
+            foreach ($data as $value) {
+                PostComment::insert($value);
 
-            PostComment::create($data);
+                if (array_key_exists($value['post_id'], $counts)) {
+                    $counts[$value['post_id']]++;
+                } else {
+                    $counts[$value['post_id']] = 1;
+                }
+            }
 
             $data = [];
+        }
+
+        foreach ($counts as $key => $count) {
+            Post::where('id', $key)->update(['comments_count' => $count]);
         }
     }
 }

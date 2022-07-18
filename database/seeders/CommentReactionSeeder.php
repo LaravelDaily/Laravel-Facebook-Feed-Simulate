@@ -17,6 +17,8 @@ class CommentReactionSeeder extends Seeder
 
         $data = [];
 
+        $counts = [];
+
         $reactions = config('markable.allowed_values.reaction');
 
         for ($r = 0; $r < 100; $r++) {
@@ -32,10 +34,18 @@ class CommentReactionSeeder extends Seeder
             foreach ($data as $reaction) {
                 Reaction::insert($reaction);
 
-                Post::where('id', $reaction['markable_id'])->increment('post_comments_reactions_count');
+                if (array_key_exists($reaction['markable_id'], $counts)) {
+                    $counts[$reaction['markable_id']]++;
+                } else {
+                    $counts[$reaction['markable_id']] = 1;
+                }
             }
 
             $data = [];
+        }
+
+        foreach ($counts as $key => $count) {
+            Post::where('id', $key)->update(['post_reactions_count' => $count]);
         }
     }
 }
