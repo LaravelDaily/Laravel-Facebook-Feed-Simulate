@@ -15,6 +15,10 @@ return new class extends Migration {
             $table->string('link_url')->nullable();
             $table->string('link_text')->nullable();
             $table->foreignId('post_id')->nullable()->references('id')->on('posts');
+            $table->unsignedBigInteger('post_reactions_count')->default(0);
+            $table->unsignedBigInteger('comments_count')->default(0);
+            $table->unsignedBigInteger('shared_post_count')->default(0);
+            $table->unsignedBigInteger('media_count')->default(0);
             $table->unsignedBigInteger('post_comments_reactions_count')->default(0);
 
             $table->timestamps();

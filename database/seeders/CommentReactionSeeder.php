@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Post;
 use App\Models\Reaction;
 use App\Models\PostComment;
 use Illuminate\Database\Seeder;
@@ -18,7 +19,7 @@ class CommentReactionSeeder extends Seeder
 
         $reactions = config('markable.allowed_values.reaction');
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($r = 0; $r < 100; $r++) {
             for ($i = 0; $i < 10000; $i++) {
                 $data[] = [
                     'user_id'       => $users->random(),
@@ -29,7 +30,9 @@ class CommentReactionSeeder extends Seeder
             }
 
             foreach ($data as $reaction) {
-                Reaction::create($reaction);
+                Reaction::insert($reaction);
+
+                Post::where('id', $reaction['markable_id'])->increment('post_comments_reactions_count');
             }
 
             $data = [];

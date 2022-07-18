@@ -67,7 +67,7 @@
                                             <x-dynamic-component :component="'reactions.' . $reaction" />
                                         @endforeach
                                     </div>
-                                    <span class="ml-1 text-gray-500">{{ $post->reactions_count }} reactions</span>
+                                    <span class="ml-1 text-gray-500">{{ $post->post_reactions_count }} reactions</span>
                                 </div>
                                 <span class="rounded-full grid place-items-center text-2xl -ml-1 text-red-800">
                                     <i class='bx bxs-angry'></i>

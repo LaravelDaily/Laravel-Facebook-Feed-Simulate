@@ -28,6 +28,15 @@ class Post extends Model implements HasMedia
         Reaction::class,
     ];
 
+    protected static function booted()
+    {
+        static::created(function (Post $post) {
+            if (! is_null($post->post_id)) {
+                Post::where('id', $post->post_id)->increment('shared_post_count');
+            }
+        });
+    }
+
     public function user(): belongsTo
     {
         return $this->belongsTo(User::class);

@@ -20,10 +20,9 @@ class HomeController extends Controller
                     'popularReply'
                 ]
             ])
-            ->withCount(['media', 'reactions', 'comments', 'sharedPost'])
             ->whereDate('posts.created_at', '>=', now()->subDays(7))
             ->orderByDesc(
-                DB::raw('reactions_count + (shared_post_count * 3) + (comments_count * 2) + post_comments_reactions_count + (CASE WHEN media_count > 0 THEN 10 ELSE 0 END)')
+                DB::raw('post_reactions_count + (shared_post_count * 3) + (comments_count * 2) + post_comments_reactions_count + (CASE WHEN media_count > 0 THEN 10 ELSE 0 END)')
             )
             ->take(10)
             ->get();

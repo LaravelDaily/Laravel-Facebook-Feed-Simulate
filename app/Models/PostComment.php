@@ -13,9 +13,18 @@ class PostComment extends Model
     use HasFactory;
     use Markable;
 
+    protected $guarded = [];
+
     protected static array $marks = [
         Reaction::class,
     ];
+
+    protected static function booted()
+    {
+        static::created(function (PostComment $comment) {
+            Post::where('id', $comment->post_id)->increment('comments_count');
+        });
+    }
 
     public function user(): belongsTo
     {

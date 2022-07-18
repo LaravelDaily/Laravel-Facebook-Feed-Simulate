@@ -22,19 +22,17 @@ class PostCommentSeeder extends Seeder
                 $parentComment = random_int(1, 79999);
             }
 
-            $data[] = [
+            $data = [
                 'post_id'           => $posts->random(),
                 'user_id'           => $users->random(),
                 'comment_text'      => $faker->paragraphs(rand(1, 5), true),
                 'parent_comment_id' => $parentComment ?? null,
                 'created_at'        => now(),
             ];
-        }
 
-        $chunks = array_chunk($data, 5000);
+            PostComment::create($data);
 
-        foreach ($chunks as $chunk) {
-            PostComment::insert($chunk);
+            $data = [];
         }
     }
 }

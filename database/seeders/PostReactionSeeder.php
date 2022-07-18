@@ -18,7 +18,7 @@ class PostReactionSeeder extends Seeder
 
         $reactions = config('markable.allowed_values.reaction');
 
-        for ($i=0; $i < 100; $i++) {
+        for ($r=0; $r < 100; $r++) {
             for ($i = 0; $i < 10000; $i++) {
                 $data[] = [
                     'user_id'       => $users->random(),
@@ -30,6 +30,8 @@ class PostReactionSeeder extends Seeder
 
             foreach ($data as $reaction) {
                 Reaction::insert($reaction);
+
+                Post::where('id', $reaction['markable_id'])->increment('post_reactions_count');
             }
 
             $data = [];

@@ -34,10 +34,11 @@ class PostSeeder extends Seeder
         Post::chunk(200, function ($posts) use ($faker) {
             foreach ($posts as $post) {
                 if ($faker->boolean(20)) {
-                    $posts = Post::where('id', '!=', $post->id)->inRandomOrder()->first();
+                    $randomPost = Post::where('id', '!=', $post->id)->inRandomOrder()->first();
+                    $randomPost->increment('shared_post_count');
 
                     $post->update([
-                        'post_id' => $posts->id,
+                        'post_id' => $randomPost->id,
                     ]);
                 }
             }
