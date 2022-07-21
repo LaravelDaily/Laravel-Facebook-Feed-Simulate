@@ -29,17 +29,15 @@ class CommentReactionSeeder extends Seeder
                     'markable_id'   => $comments->random(),
                     'value'         => $reactions[array_rand($reactions)],
                 ];
-            }
 
-            foreach ($data as $reaction) {
-                Reaction::insert($reaction);
-
-                if (array_key_exists($reaction['markable_id'], $counts)) {
-                    $counts[$reaction['markable_id']]++;
+                if (array_key_exists($data[$i]['markable_id'], $counts)) {
+                    $counts[$data[$i]['markable_id']]++;
                 } else {
-                    $counts[$reaction['markable_id']] = 1;
+                    $counts[$data[$i]['markable_id']] = 1;
                 }
             }
+
+            Reaction::insert($data);
 
             $data = [];
         }

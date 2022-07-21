@@ -25,7 +25,7 @@ class PostSeeder extends Seeder
             ];
         }
 
-        $chunks = array_chunk($data, 100);
+        $chunks = array_chunk($data, 1000);
 
         foreach ($chunks as $chunk) {
             Post::insert($chunk);
